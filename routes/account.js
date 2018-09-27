@@ -34,6 +34,16 @@ function addAccount(dataToInsert, callback) {
   })
 }
 
+function updateAccount(id, dataToUpdate, callback) {
+  Account.findByIdAndUpdate(id, dataToUpdate, (err, doc) => {
+    if (err) {
+      callback(err)
+    } else {
+      callback(null)
+    }
+  })
+}
+
 function deleteAccount(id, callback) {
   Account.findById(id)
     .exec((err, account) => {
@@ -51,4 +61,4 @@ function deleteAccount(id, callback) {
     })
 }
 
-module.exports = {getAccounts, getAccount, addAccount, deleteAccount}
+module.exports = {getAccounts, getAccount, addAccount, updateAccount, deleteAccount}

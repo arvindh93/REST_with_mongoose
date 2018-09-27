@@ -77,6 +77,47 @@ describe('accounts', () => {
       })
     })
 
+    describe('/PUT account', () => {
+      it('it should edit an account document', (done) => {
+        let updatedAccount = {
+          "balance": 23000
+        }
+
+        chai.request(server)
+          .get('/accounts')
+          .end((err, res) => {
+            if (err) {
+              process.exit(1)
+            }
+            let expectedAccount = res.body[1]
+
+            chai.request(server)
+              .put('/accounts/' + expectedAccount._id)
+              .send(updatedAccount)
+              .end((err, res) => {
+                if (err) {
+                  process.exit(1)
+                } else {
+                  res.should.have.status(200)
+
+                  chai.request(server)
+                    .get('/accounts/' + expectedAccount._id)
+                    .end((err, res) => {
+                      if (err) {
+                        process.exit(1)
+                      }
+                      res.should.have.status(200)
+                      res.body.should.be.a('object')
+                      res.body.should.have.property('name').eql(expectedAccount.name)
+                      res.body.should.have.property('balance').eql(23000)
+                      done()
+                    })
+                }
+              })
+        })
+      })
+    })
+
   describe('/DELETE account', () => {
     it('it should delete passing account document', (done) => {
       chai.request(server)

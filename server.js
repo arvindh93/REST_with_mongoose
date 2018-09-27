@@ -43,6 +43,19 @@ app.post('/accounts', (req, res) => {
   })
 })
 
+app.put('/accounts/:id', (req, res) => {
+  routes.updateAccount(req.params.id, req.body, (err) => {
+    if (err) {
+      let errorBody = {
+        "error" : err.message
+      }
+      res.status(500).send(errorBody)
+    } else {
+      res.sendStatus(200)
+    }
+  })
+})
+
 app.delete('/accounts/:id', (req, res) => {
   routes.deleteAccount(req.params.id, (err) => {
     if (err) {
